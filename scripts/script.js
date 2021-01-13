@@ -37,7 +37,7 @@
     console.log('got pong', message);
   });
 
-  socket.emit('ping', 'hewwo');
+  setTimeout(() => socket.emit('ping', 'hewwo'), 3000)
 
   let instruments = {};
   let context = new AudioContext();
