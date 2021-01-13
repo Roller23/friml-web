@@ -29,6 +29,10 @@
     get('.loading-screen .text').innerText = `Jesteś ${pos} w kolejce!`;
   });
 
+  socket.on('progress', () => {
+    get('.loading-screen .text').innerText = 'Generowanie...';
+  });
+
   let instruments = {};
   let context = new AudioContext();
   let envelope = context.createGain();
