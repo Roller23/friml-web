@@ -24,10 +24,10 @@
     try {
       message = JSON.parse(event.data);
     } catch (error) {
-      log('Could not parse a message');
+      console.log('Could not parse a message');
       return;
     }
-    log('Received ', message);
+    console.log('Received ', message);
     if (typeof socket.handlers[message.event] === 'function') {
       socket.handlers[message.event](message.data);
     }
