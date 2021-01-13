@@ -135,16 +135,12 @@
 
     get('.loading-screen').style.display = 'block';
     get('.loading-screen').classList.add('visible');
-    let timeout = setTimeout(() => {
-      get('.loading-screen .text').innerText = 'Oczekiwanie w kolejce...';
-    }, 1000);
     let availableRes = await req('https://friml.herokuapp.com/check');
-    clearTimeout(timeout);
     if (availableRes === null) {
       return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
     }
     if (!availableRes.available) {
-      return get('.loading-screen .text').innerText += ' Średni czas oczekiwania: ' + availableRes.time + 's';
+      return get('.loading-screen .text').innerText = 'Oczekiwanie w kolejce...';
     }
 
     get('.loading-screen .text').innerText = 'Generowanie...';
