@@ -149,7 +149,7 @@
     console.log(selectedGenre, selectedKey, selectedInstrument);
     let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
     let json = await req('https://friml.herokuapp.com/data', data);
-    if (json === null) {
+    if (json === null || !json.song) {
       return get('.loading-screen .text').innerText = 'Błąd serwera!';
     }
     console.log(json)
