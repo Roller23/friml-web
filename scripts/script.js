@@ -3,7 +3,23 @@
   const socket = io('https://friml-conductor.glitch.me/');
 
   socket.on('song', data => {
-    console.log('got song', data)
+    try {
+      let json = JSON.parse(data);
+      if (!json.song) {
+        console.log('error', data)
+        return get('.loading-screen .text').innerText = 'Błąd serwera!';
+      }
+    } catch (e) {
+      console.log('error', data)
+      return get('.loading-screen .text').innerText = 'Błąd serwera!';
+    }
+    get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
+    songToPlay = transformMidi(json.song.notes);
+
+    get('.loading-screen').classList.remove('visible');
+    setTimeout(() => get('.loading-screen').style.display = 'none', 700);
+    
+    console.log(json);
   });
 
   socket.on('queued', pos => {
