@@ -67,7 +67,12 @@
         }
       };
       xhr.open('GET', path + query, true);
-      xhr.send();
+      try {
+        xhr.send();
+      } catch (e) {
+        console.error(e);
+        resolve(null);
+      }
     });
   }
 
@@ -133,7 +138,7 @@
 
     let availableRes = await req('/check');
     if (availableRes === null) {
-      return get('.loading-screen .text').innerText = 'Błąd serwera!';
+      return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
     }
     if (!availableRes.available) {
       return get('.loading-screen .text').innerText = 'Jesteś ' + availableRes.queue + ' w kolejce!';
