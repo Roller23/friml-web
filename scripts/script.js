@@ -1,6 +1,7 @@
 (function() {
 
   const socket = io('https://friml-conductor.glitch.me/');
+  let position = 0;
 
   socket.on('song', data => {
     let json = null;
@@ -26,12 +27,18 @@
   });
 
   socket.on('queued', pos => {
+    position = pos;
     get('.loading-screen .text').innerText = `Jesteś ${pos} w kolejce!`;
   });
 
   socket.on('progress', () => {
-    get('.loading-screen .text').innerText = 'Generowanie...';
+    position--;
+    get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
   });
+
+  socket.on('generating', () => {
+    get('.loading-screen .text').innerText = 'Generowanie...';
+  })
 
   let instruments = {};
   let context = new AudioContext();
