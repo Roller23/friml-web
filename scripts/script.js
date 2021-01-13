@@ -1,44 +1,4 @@
 (function() {
-
-  const socket = new WebSocket('wss://friml.herokuapp.com');
-  socket.handlers = {};
-  socket.emit = function(event, data) {
-    let message = JSON.stringify({event, data});
-    console.log('Sending ', message)
-    this.send(message);
-  }
-  socket.on = function(event, handler) {
-    this.handlers[event] = handler;
-  }
-
-  socket.addEventListener('open', (event) => {
-    console.log('Websocket connection established');
-  });
-
-  socket.addEventListener('close', (event) => {
-    console.log('Websocket connection closed');
-  });
-
-  socket.addEventListener('message', (event) => {
-    let message = null;
-    try {
-      message = JSON.parse(event.data);
-    } catch (error) {
-      console.log('Could not parse a message');
-      return;
-    }
-    console.log('Received ', message);
-    if (typeof socket.handlers[message.event] === 'function') {
-      socket.handlers[message.event](message.data);
-    }
-  });
-
-  socket.on('pong', message => {
-    console.log('got pong', message);
-  });
-
-  // setTimeout(() => socket.emit('ping', 'hewwo'), 3000)
-
   let instruments = {};
   let context = new AudioContext();
   let envelope = context.createGain();
@@ -176,39 +136,30 @@
     get('.loading-screen').style.display = 'block';
     get('.loading-screen').classList.add('visible');
 
+    let availableRes = await req('https://friml.herokuapp.com/check');
+    if (availableRes === null) {
+      return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
+    }
+    if (!availableRes.available) {
+      return get('.loading-screen .text').innerText = 'Oczekiwanie w kolejce...';
+    }
+
+    get('.loading-screen .text').innerText = 'Generowanie...';
+
+    console.log(selectedGenre, selectedKey, selectedInstrument);
     let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
-    socket.emit('song', data)
-    socket.on('queued', position => {
-      get('.loading-screen .text').innerText = 'Jesteś ' + position + ' w kolejce!';
-    })
-    socket.on('song', data => {
-      console.log('got data', data)
-    })
+    let json = await req('https://friml.herokuapp.com/data', data);
+    if (json === null || !json.song) {
+      return get('.loading-screen .text').innerText = 'Błąd serwera!';
+    }
+    console.log(json)
+    get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
+    songToPlay = transformMidi(json.song.notes);
 
-    // let availableRes = await req('https://friml.herokuapp.com/check');
-    // if (availableRes === null) {
-    //   return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
-    // }
-    // if (!availableRes.available) {
-    //   return get('.loading-screen .text').innerText = 'Oczekiwanie w kolejce...';
-    // }
+    get('.loading-screen').classList.remove('visible');
+    setTimeout(() => get('.loading-screen').style.display = 'none', 700);
 
-    // get('.loading-screen .text').innerText = 'Generowanie...';
-
-    // console.log(selectedGenre, selectedKey, selectedInstrument);
-    // let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
-    // let json = await req('https://friml.herokuapp.com/data', data);
-    // if (json === null || !json.song) {
-    //   return get('.loading-screen .text').innerText = 'Błąd serwera!';
-    // }
-    // console.log(json)
-    // get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
-    // songToPlay = transformMidi(json.song.notes);
-
-    // get('.loading-screen').classList.remove('visible');
-    // setTimeout(() => get('.loading-screen').style.display = 'none', 700);
-
-    // console.log('data', json)
+    console.log('data', json)
   }
 
   function setDynamicSizes() {
