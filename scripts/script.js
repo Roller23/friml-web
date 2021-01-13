@@ -1,4 +1,7 @@
 (function() {
+
+  const socket = io('https://friml-conductor.glitch.me/');
+
   let instruments = {};
   let context = new AudioContext();
   let envelope = context.createGain();
