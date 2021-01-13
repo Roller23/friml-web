@@ -4,7 +4,7 @@
   socket.handlers = {};
   socket.emit = function(event, data) {
     let message = JSON.stringify({event, data});
-    log('Sending ', object)
+    console.log('Sending ', object)
     this.send(message);
   }
   socket.on = function(event, handler) {
