@@ -11,10 +11,6 @@
     this.handlers[event] = handler;
   }
 
-  socket.on('pong', message => {
-    console.log('got pong', message);
-  });
-
   socket.addEventListener('open', (event) => {
     console.log('Websocket connection established');
   });
@@ -36,6 +32,12 @@
       socket.handlers[message.event](message.data);
     }
   });
+
+  socket.on('pong', message => {
+    console.log('got pong', message);
+  });
+
+  socket.emit('ping', 'hewwo');
 
   let instruments = {};
   let context = new AudioContext();
