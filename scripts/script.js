@@ -135,8 +135,11 @@
 
     get('.loading-screen').style.display = 'block';
     get('.loading-screen').classList.add('visible');
-
+    let timeout = setTimeout(() => {
+      get('.loading-screen .text').innerText = 'Oczekiwanie w kolejce...';
+    }, 1000);
     let availableRes = await req('https://friml.herokuapp.com/check');
+    clearTimeout(timeout);
     if (availableRes === null) {
       return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
     }
@@ -154,7 +157,6 @@
     }
     console.log(json)
     get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
-    // get('.download-wav').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.wav')
     songToPlay = transformMidi(json.song.notes);
 
     get('.loading-screen').classList.remove('visible');
