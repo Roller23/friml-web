@@ -10,6 +10,7 @@
         console.log('error', data)
         return get('.loading-screen .text').innerText = 'Błąd serwera!';
       }
+      json.song = JSON.parse(json.song);
     } catch (e) {
       console.log('error', data)
       return get('.loading-screen .text').innerText = 'Błąd serwera!';
