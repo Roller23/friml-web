@@ -3,8 +3,9 @@
   const socket = io('https://friml-conductor.glitch.me/');
 
   socket.on('song', data => {
+    let json = null;
     try {
-      let json = JSON.parse(data);
+      json = JSON.parse(data);
       if (!json.song) {
         console.log('error', data)
         return get('.loading-screen .text').innerText = 'Błąd serwera!';
@@ -18,7 +19,7 @@
 
     get('.loading-screen').classList.remove('visible');
     setTimeout(() => get('.loading-screen').style.display = 'none', 700);
-    
+
     console.log(json);
   });
 
