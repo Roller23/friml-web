@@ -144,7 +144,7 @@
       return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
     }
     if (!availableRes.available) {
-      return get('.loading-screen .text').innerText = 'Jesteś ' + availableRes.queue + ' w kolejce!';
+      return get('.loading-screen .text').innerText += ' Średni czas oczekiwania: ' + availableRes.time + 's';
     }
 
     get('.loading-screen .text').innerText = 'Generowanie...';
