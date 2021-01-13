@@ -175,6 +175,13 @@
 
     get('.loading-screen').style.display = 'block';
     get('.loading-screen').classList.add('visible');
+
+    let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
+    socket.emit('song', data)
+    socket.on('song', data => {
+      console.log('got data', data)
+    })
+
     // let availableRes = await req('https://friml.herokuapp.com/check');
     // if (availableRes === null) {
     //   return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
