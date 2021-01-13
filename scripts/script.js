@@ -178,6 +178,9 @@
 
     let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
     socket.emit('song', data)
+    socket.on('queued', position => {
+      get('.loading-screen .text').innerText = 'Jesteś ' + position + ' w kolejce!';
+    })
     socket.on('song', data => {
       console.log('got data', data)
     })
