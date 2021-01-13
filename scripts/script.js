@@ -153,8 +153,8 @@
       return get('.loading-screen .text').innerText = 'Błąd serwera!';
     }
     console.log(json)
-    get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid')
-    get('.download-wav').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.wav')
+    get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
+    // get('.download-wav').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.wav')
     songToPlay = transformMidi(json.song.notes);
 
     get('.loading-screen').classList.remove('visible');

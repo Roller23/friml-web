@@ -327,7 +327,7 @@ button {
   border-radius: 20px;
 }
 .main-container .slider .results .bottom .download-wav .inner, .main-container .slider .results .bottom .download-midi .inner {
-  background-size: 65%;
+  background-size: 30%;
   background-position: center 5px;
   background-repeat: no-repeat;
   width: 100%;
