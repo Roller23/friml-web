@@ -136,7 +136,7 @@
     get('.loading-screen').style.display = 'block';
     get('.loading-screen').classList.add('visible');
 
-    let availableRes = await req('/check');
+    let availableRes = await req('https://friml.herokuapp.com/check');
     if (availableRes === null) {
       return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
     }
@@ -148,7 +148,7 @@
 
     console.log(selectedGenre, selectedKey, selectedInstrument);
     let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
-    let json = await req('/data', data);
+    let json = await req('https://friml.herokuapp.com/data', data);
     if (json === null) {
       return get('.loading-screen .text').innerText = 'Błąd serwera!';
     }
