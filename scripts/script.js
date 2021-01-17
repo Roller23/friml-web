@@ -11,9 +11,7 @@
       console.log('error', data)
       return get('.loading-screen .text').innerText = 'Błąd serwera!';
     }
-
     console.log(json)
-
     get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.name + '.mid');
     songToPlay = transformMidi(json.notes);
 
@@ -21,9 +19,12 @@
     setTimeout(() => get('.loading-screen').style.display = 'none', 700);
   });
 
-  socket.on('queued', pos => {
-    position = pos;
-    get('.loading-screen .text').innerText = `Jesteś ${pos} w kolejce!`;
+  socket.on('queued', data => {
+    position = data.position;
+    get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
+    if (data.time !== -1) {
+      get('.loading-screen .text').innerText += `Średni czas oczekiwania: ${data.time.toFixed(1)}s`;
+    }
   });
 
   socket.on('progress', () => {
@@ -37,7 +38,6 @@
 
   let instruments = {};
   let context = new AudioContext();
-  let envelope = context.createGain();
   Soundfont.instrument(context, 'bright_acoustic_piano', {release: 0, sustain: 1}).then(device => {
     instruments.piano = device;
     console.log('Piano loaded');
