@@ -24,7 +24,7 @@
     position = data.position;
     avgTime = data.time;
     get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
-    if (data.time !== -1) {
+    if (data.time > -1) {
       get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(data.time / 1000).toFixed(1)}s`;
     }
   });
@@ -32,7 +32,7 @@
   socket.on('progress', data => {
     position--;
     get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
-    if (avgTime !== -1) {
+    if (avgTime > -1) {
       get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(avgTime / 1000).toFixed(1)}s`;
     }
   });
