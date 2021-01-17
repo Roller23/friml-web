@@ -2,6 +2,7 @@
 
   const socket = io('https://friml-conductor.glitch.me/');
   let position = 0;
+  let avgTime = -1;
 
   socket.on('song', data => {
     let json = null;
@@ -21,15 +22,19 @@
 
   socket.on('queued', data => {
     position = data.position;
+    avgTime = data.time;
     get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
     if (data.time !== -1) {
       get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(data.time / 1000).toFixed(1)}s`;
     }
   });
 
-  socket.on('progress', () => {
+  socket.on('progress', data => {
     position--;
     get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
+    if (avgTime !== -1) {
+      get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(avgTime / 1000).toFixed(1)}s`;
+    }
   });
 
   socket.on('generating', () => {
