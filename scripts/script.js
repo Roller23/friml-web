@@ -8,7 +8,7 @@
     try {
       json = JSON.parse(data);
       if (!json.song) {
-        console.log('error', data)
+        console.log('error (song)', data, json)
         return get('.loading-screen .text').innerText = 'Błąd serwera!';
       }
       json.song = JSON.parse(json.song);
