@@ -7,11 +7,6 @@
     let json = null;
     try {
       json = JSON.parse(data);
-      if (!json.song) {
-        console.log('error (song)', data, json)
-        return get('.loading-screen .text').innerText = 'Błąd serwera!';
-      }
-      json.song = JSON.parse(json.song);
     } catch (e) {
       console.log('error', data)
       return get('.loading-screen .text').innerText = 'Błąd serwera!';
@@ -19,8 +14,8 @@
 
     console.log(json)
 
-    get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
-    songToPlay = transformMidi(json.song.notes);
+    get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.name + '.mid');
+    songToPlay = transformMidi(json.notes);
 
     get('.loading-screen').classList.remove('visible');
     setTimeout(() => get('.loading-screen').style.display = 'none', 700);
@@ -87,36 +82,6 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  function req(path, data) {
-    return new Promise(resolve => {
-      let xhr = new XMLHttpRequest();
-      let form = new FormData();
-      if (typeof data === 'object' && data !== undefined) {
-        Object.keys(data).forEach(key => form.append(key, data[key]));
-      }
-      const query = '?' + new URLSearchParams(form).toString();
-      xhr.onload = function(x) {
-        try {
-          let json = JSON.parse(this.responseText);
-          if (json.song) {
-            json.song = JSON.parse(json.song);
-          }
-          resolve(json);
-        } catch (e) {
-          console.log('Error!', this.responseText);
-          resolve(null);
-        }
-      };
-      xhr.open('GET', path + query, true);
-      try {
-        xhr.send();
-      } catch (e) {
-        console.error(e);
-        resolve(null);
-      }
-    });
-  }
-
   let canvas = get('canvas');
   let ctx = canvas.getContext('2d');
   let optimalScreenHeight = 800;
@@ -179,31 +144,6 @@
 
     let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
     socket.emit('song', data)
-
-    // let availableRes = await req('https://friml.herokuapp.com/check');
-    // if (availableRes === null) {
-    //   return get('.loading-screen .text').innerText = 'Serwer tymczasowo niedostępny';
-    // }
-    // if (!availableRes.available) {
-    //   return get('.loading-screen .text').innerText = 'Oczekiwanie w kolejce...';
-    // }
-
-    // get('.loading-screen .text').innerText = 'Generowanie...';
-
-    // console.log(selectedGenre, selectedKey, selectedInstrument);
-    // let data = {genre: selectedGenre, key: selectedKey, instrument: selectedInstrument};
-    // let json = await req('https://friml.herokuapp.com/data', data);
-    // if (json === null || !json.song) {
-    //   return get('.loading-screen .text').innerText = 'Błąd serwera!';
-    // }
-    // console.log(json)
-    // get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.song.name + '.mid');
-    // songToPlay = transformMidi(json.song.notes);
-
-    // get('.loading-screen').classList.remove('visible');
-    // setTimeout(() => get('.loading-screen').style.display = 'none', 700);
-
-    // console.log('data', json)
   }
 
   function setDynamicSizes() {
