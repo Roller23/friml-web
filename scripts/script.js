@@ -23,7 +23,7 @@
     position = data.position;
     get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
     if (data.time !== -1) {
-      get('.loading-screen .text').innerText += `Średni czas oczekiwania: ${data.time.toFixed(1)}s`;
+      get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(data.time / 1000).toFixed(1)}s`;
     }
   });
 
