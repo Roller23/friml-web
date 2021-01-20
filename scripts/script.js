@@ -43,7 +43,7 @@
 
   let instruments = {};
   let context = new AudioContext();
-  Soundfont.instrument(context, 'bright_acoustic_piano', {release: 0, sustain: 1}).then(device => {
+  Soundfont.instrument(context, 'bright_acoustic_piano', {release: 0, sustain: 0.5}).then(device => {
     instruments.piano = device;
     console.log('Piano loaded');
   });
@@ -178,7 +178,7 @@
   function transformMidi(midi) {
     let result = [];
     let timePassed = 0;
-    let speed = 0.5; // TODO: SLOW THIS DOWN LATER
+    let speed = 0.6; // TODO: SLOW THIS DOWN LATER
     midi.forEach(note => {
       timePassed += Math.floor(eval(note.off) * speed * 1000);
       let duration = Math.floor(eval(note.dur) * speed * 1000);
