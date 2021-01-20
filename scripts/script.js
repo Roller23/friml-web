@@ -178,7 +178,7 @@
   function transformMidi(midi) {
     let result = [];
     let timePassed = 0;
-    let speed = 1.5;
+    let speed = 0.5; // TODO: SLOW THIS DOWN LATER
     midi.forEach(note => {
       timePassed += Math.floor(eval(note.off) * speed * 1000);
       let duration = Math.floor(eval(note.dur) * speed * 1000);
