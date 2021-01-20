@@ -178,7 +178,7 @@
   function transformMidi(midi) {
     let result = [];
     let timePassed = 0;
-    let speed = 1;
+    let speed = 1.5;
     midi.forEach(note => {
       timePassed += Math.floor(eval(note.off) * speed * 1000);
       let duration = Math.floor(eval(note.dur) * speed * 1000);
@@ -222,9 +222,9 @@
     songPlaying = true;
     songToPlay.forEach((note, i) => {
       let timeout = setTimeout(() => {
-        // let playData = {duration: note.dur / 1000};
-        // instruments.piano.play(note.pitch, context.currentTime, playData);
-        instruments[selectedInstrument].play(note.pitch);
+        let playData = {duration: note.dur / 1000};
+        instruments.piano.play(note.pitch, context.currentTime, playData);
+        // instruments[selectedInstrument].play(note.pitch);
         console.log('playing', note);
         if (i === songToPlay.length - 1) {
           setTimeout(() => {
