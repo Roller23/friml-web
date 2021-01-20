@@ -43,7 +43,7 @@
 
   let instruments = {};
   let context = new AudioContext();
-  Soundfont.instrument(context, 'bright_acoustic_piano', {release: 0, sustain: 0.5}).then(device => {
+  Soundfont.instrument(context, 'bright_acoustic_piano', {release: 0, sustain: 0.2}).then(device => {
     instruments.piano = device;
     console.log('Piano loaded');
   });
