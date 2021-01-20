@@ -223,7 +223,7 @@
     songToPlay.forEach((note, i) => {
       let timeout = setTimeout(() => {
         let playData = {duration: note.dur / 1000};
-        instruments.piano.play(note.pitch, context.currentTime, playData);
+        instruments[selectedInstrument].play(note.pitch, context.currentTime, playData);
         // instruments[selectedInstrument].play(note.pitch);
         console.log('playing', note);
         if (i === songToPlay.length - 1) {
