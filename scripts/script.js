@@ -10,7 +10,7 @@
       json = JSON.parse(data);
     } catch (e) {
       console.log('error', data)
-      return get('.loading-screen .text').innerText = 'Błąd serwera!';
+      return get('.loading-screen .text').innerText = 'Server error!';
     }
     console.log(json)
     get('.download-midi').setAttribute('href', 'https://friml.herokuapp.com/outputs/' + json.name + '.mid');
@@ -23,22 +23,22 @@
   socket.on('queued', data => {
     position = data.position;
     avgTime = data.time;
-    get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
+    get('.loading-screen .text').innerText = `Queue position: ${position}`;
     if (data.time > -1) {
-      get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(data.time / 1000).toFixed(1)}s`;
+      get('.loading-screen .text').innerHTML += `<br>Average waiting time: ${(data.time / 1000).toFixed(1)}s`;
     }
   });
 
   socket.on('progress', data => {
     position--;
-    get('.loading-screen .text').innerText = `Jesteś ${position} w kolejce!`;
+    get('.loading-screen .text').innerText = `Queue position: ${position}`;
     if (avgTime > -1) {
-      get('.loading-screen .text').innerHTML += `<br>Średni czas oczekiwania: ${(avgTime / 1000).toFixed(1)}s`;
+      get('.loading-screen .text').innerHTML += `<br>Average waiting time: ${(avgTime / 1000).toFixed(1)}s`;
     }
   });
 
   socket.on('generating', () => {
-    get('.loading-screen .text').innerText = 'Generowanie...';
+    get('.loading-screen .text').innerText = 'Generating song...';
   })
 
   let instruments = {};
